@@ -31,9 +31,15 @@ public class PlanningController {
 	
 	@GetMapping("/ReadMe")
 	public String planning() {
-		return "ReadMe.html";
+		return "ReadMe";
 	}
 	
+	/***
+	 * Cette fonction prend en paramêtre une liste de salle et une liste de réunion et retourne une liste de réservations
+	 * @param salles : les salles disponibles
+	 * @param reunions : les réunions à assigner
+	 * @return Une liste de Reservation, associant chaque réunion à une salle ou à null si aucune salle n'est disponible.
+	 */
 	public List<Reservation> createPlanning(List<Salle> salles, List<Reunion> reunions){
 		List<Reservation > reservations = new ArrayList<Reservation>();
 		
@@ -162,8 +168,14 @@ public class PlanningController {
 		return reservations;
 	}
 
-	//Vérifie si la salle est réservée à ce créneau (ou aux créneaux adjacents à cause des restrictions COVID)
-    public boolean isSalleDisponible(List<Reservation> reservations, Salle s, int creneau){
+    /***
+     * Vérifie si la salle est réservée à ce créneau (ou aux créneaux adjacents à cause des restrictions COVID)
+     * @param reservations la liste des réservations actuelles
+     * @param s la salle dont on vérifie la disponibilités
+     * @param creneau l'heure à laquelle on vérifie la disponibilité
+     * @return true si la salle est disponible, false sinon
+     */
+	public boolean isSalleDisponible(List<Reservation> reservations, Salle s, int creneau){
         for(Reservation r : reservations){
             if(r.getSalle()==s && (r.getReunion().getCreneau()==creneau || r.getReunion().getCreneau()-1==creneau || r.getReunion().getCreneau()+1==creneau)) {
                 return false;
@@ -172,8 +184,16 @@ public class PlanningController {
         return true;
     }
 
-    //Vérifie si il reste assez d'équipement disponible à ce créneau pour pouvoir tenir la réunion dans cette salle.
-    public boolean isEquipementDisponible(List<Reservation> reservations,Reunion r, Salle s, Map<TypeEquipement,Integer> equipementsLibres){
+    //
+    /***
+     * Vérifie si il reste assez d'équipement disponible à ce créneau pour pouvoir tenir la réunion dans cette salle.
+     * @param reservations la liste des réservations actuelles
+     * @param r la réunion qu'on cherche à tenir
+     * @param s la salle où on veut tenir la réunion
+     * @param equipementsLibres la liste des équipements mis à disposition par l'entreprise
+     * @return true si l'équipement est disponible, false sinon
+     */
+	public boolean isEquipementDisponible(List<Reservation> reservations,Reunion r, Salle s, Map<TypeEquipement,Integer> equipementsLibres){
         int creneau = r.getCreneau();
         boolean result = true;
         Map<TypeEquipement,Integer> equipementReserveCeCreneau = new HashMap<>();
