@@ -8,8 +8,7 @@ import java.util.Map;
 import com.example.app.Reunion.TypeReunion;
 
 /**
- * Représente l'entreprise avec les réunions, les salles, le matériel libre et le planning de réservations.
- * Contient également les fonctions permettant la création du planning
+ * Représente l'entreprise avec les réunions, les salles et le matériel libre.
  */
 public class Entreprise {
 
@@ -17,8 +16,7 @@ public class Entreprise {
     private List<Salle> locaux = new ArrayList<>();
     //L'équipement pouvant être emprunté pour une réunion
     private Map<TypeEquipement,Integer> equipementsLibres = new HashMap<>();
-    //La liste des réservations de l'entreprise
-    private List<Reservation> reservations = new ArrayList<>();
+
 
     //Pattern singleton
     private static Entreprise instance = new Entreprise();
@@ -29,7 +27,6 @@ public class Entreprise {
         return instance;
     }
     
-    //Initialise l'entreprise avec la liste de réunions et de salles
     private Entreprise(){
     	initializeCompany();
     }
@@ -113,14 +110,6 @@ public class Entreprise {
 
     public void setEquipementsLibres(Map<TypeEquipement, Integer> equipementsLibres) {
         this.equipementsLibres = equipementsLibres;
-    }
-
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
     }
 
     @Override
